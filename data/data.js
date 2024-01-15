@@ -4,7 +4,6 @@ export const data = {
         paths: [
           "videos/presentation.mp4"
         ],
-        numVidsToPlay: 1,
         audioVisualizer: false,
       },
       {
@@ -15,8 +14,7 @@ export const data = {
           "videos/a4.mp4",
           "videos/a5.mp4",
         ],
-        numVidsToPlay: 2,
-        audioVisualizer: false,
+        audioVisualizer: true,
       },
       {
         paths: [
@@ -26,7 +24,6 @@ export const data = {
           "videos/b4.mp4",
           "videos/b5.mp4",
         ],
-        numVidsToPlay: 1,
         audioVisualizer: false,
       },
       {
@@ -37,8 +34,7 @@ export const data = {
           "videos/c4.mp4",
           "videos/c5.mp4",
         ],
-        numVidsToPlay: 1,
-        audioVisualizer: false,
+        audioVisualizer: true,
       },
     ],
   };

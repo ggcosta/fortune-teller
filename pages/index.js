@@ -1,40 +1,33 @@
-import Enter from "@/components/Enter";
-import Video from "@/components/Video";
-import Phase from "@/components/Phase";
 import Head from "next/head";
 import { useState } from "react";
 import { data } from "@/data/data";
+import PhaseHandler from "@/components/PhaseHandler";
+import Start from "@/components/Start";
 
 export default function Home() {
+  // State to track if the enter button has been pressed
   const [enterPressed, setEnterPressed] = useState(false);
-  const [showPresentation, setShowPresentation] = useState(false);
-  const [questionPhase, setQuestionPhase] = useState(false);
-  const [currentPhase, setCurrentPhase] = useState(0);
-  
+  // State to track if the presentation has started
+  const [startPresentation, setStartPresentation] = useState(false);
+
+  // Extract phases array from data
   const phases = data.phases;
-  const numPhases = phases.length;
-
-  const handleEnter = () => {
+  
+  // Function tu run after the start button is pressed
+  const handleStart = () => {
     setEnterPressed(true);
-    // setShowPresentation(true);
-    setQuestionPhase(true);
+    setStartPresentation(true);
+    
   };
 
+  // Function to run at the end of the presentation
   const handlePresentationEnd = () => {
-    setShowPresentation(false);
-    setQuestionPhase(true);
-  };
+    setStartPresentation(false);
+  }
 
-  const handlePhaseEnd = () => {
-    if (currentPhase < numPhases - 1) {
-      setCurrentPhase(currentPhase + 1);
-    }else{
-      setQuestionPhase(false);
-    }
-  };
-
+  // Function to run when the start over button is pressed
   const handleRestart = () => {
-    setCurrentPhase(0);
+    setStartPresentation(false);
     setEnterPressed(false);
   }
 
@@ -47,27 +40,18 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {!enterPressed && <Enter handleEnter={handleEnter} />}
-        {/* {showPresentation && (
-          <Video
-            path={"/videos/presentation.mp4"}
-            handleVideoEnd={handlePresentationEnd}
-          />
-        )} */}
-        {questionPhase && (
-          <Phase
-            key={currentPhase}
-            paths={phases[currentPhase].paths}
-            numVidsToPlay={phases[currentPhase].numVidsToPlay}
-            handlePhaseEnd={handlePhaseEnd}
-            useVisualizer={phases[currentPhase].audioVisualizer}
+        {!enterPressed && <Start handleStart={handleStart} />}
+        {startPresentation && (
+          <PhaseHandler
+            phases={phases}
+            handlePresentationEnd={handlePresentationEnd}
           />
         )}
-        {!questionPhase && enterPressed && !showPresentation && (
+        {enterPressed && !startPresentation && (
           <div>
             <button
               className="begin-button"
-              onClick={() => handleRestart(false)}
+              onClick={handleRestart}
             >
               Start Over
             </button>
