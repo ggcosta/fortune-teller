@@ -1,16 +1,15 @@
-import React from "react";
 import { useState } from "react";
 import Phase from "./Phase";
 
 const PhaseHandler = ({ phases, handlePresentationEnd }) => {
   // State to keep track of which phase we are on
   const [currentPhase, setCurrentPhase] = useState(0);
-  // Number of phases
-  const numPhases = phases.length;
+  // Total number of phases
+  const totalNumPhases = phases.length;
 
   // Function to run after a phase ends
   const handlePhaseEnd = () => {
-    if (currentPhase < numPhases - 1) {
+    if (currentPhase < totalNumPhases - 1) {
       setCurrentPhase(currentPhase + 1);
     } else {
       handlePresentationEnd();
@@ -25,7 +24,7 @@ const PhaseHandler = ({ phases, handlePresentationEnd }) => {
   };
 
   return (
-    <div>
+    <>
       {
         <Phase
           key={currentPhase}
@@ -34,7 +33,7 @@ const PhaseHandler = ({ phases, handlePresentationEnd }) => {
           handlePhaseEnd={handlePhaseEnd}
         />
       }
-    </div>
+    </>
   );
 };
 

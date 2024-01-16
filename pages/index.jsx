@@ -1,17 +1,24 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { data } from "@/data/data";
 import PhaseHandler from "@/components/PhaseHandler";
 import Start from "@/components/Start";
+import MicPremission from "@/components/MicPremission";
 
 export default function Home() {
   // State to track if the enter button has been pressed
   const [enterPressed, setEnterPressed] = useState(false);
   // State to track if the presentation has started
   const [startPresentation, setStartPresentation] = useState(false);
+  // State to track if user has given microphone access
+  const [micAccess, setMicAccess] = useState(false);
 
   // Extract phases array from data
   const phases = data.phases;
+
+  const handleMicAccess = () => {
+    setMicAccess(true);
+  }
 
   // Function tu run after the start button is pressed
   const handleStart = () => {
@@ -39,7 +46,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {!enterPressed && <Start handleStart={handleStart} />}
+        {!micAccess && (
+          <MicPremission handlePremissionAccepted={handleMicAccess} />
+        )}
+        {!enterPressed && micAccess && <Start handleStart={handleStart} />}
         {startPresentation && (
           <PhaseHandler
             phases={phases}
