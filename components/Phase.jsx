@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AudioVisualizer from "./AudioVisualizer";
+import Audio from "./Audio";
 
 const Phase = ({ path, useVisualizer, handlePhaseEnd }) => {
   // States to keep track of whether to show the video or the visualizer
@@ -36,7 +37,7 @@ const Phase = ({ path, useVisualizer, handlePhaseEnd }) => {
           Your browser does not support the video tag.
         </video>
       )}
-      {showVisualizer && <AudioVisualizer handleAnswerEnd={handlePhaseEnd} />}
+      {showVisualizer && <Audio handleAnswerEnd={handlePhaseEnd} />}
     </div>
   );
 };

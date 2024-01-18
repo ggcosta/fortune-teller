@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { data } from "@/data/data";
 import PhaseHandler from "@/components/PhaseHandler";
 import Start from "@/components/Start";
-import MicPremission from "@/components/MicPremission";
+import MicPermission from "@/components/MicPermission";
 
 export default function Home() {
   // State to track if the enter button has been pressed
@@ -47,7 +47,7 @@ export default function Home() {
       </Head>
       <main>
         {!micAccess && (
-          <MicPremission handlePremissionAccepted={handleMicAccess} />
+          <MicPermission handlePremissionAccepted={handleMicAccess} />
         )}
         {!enterPressed && micAccess && <Start handleStart={handleStart} />}
         {startPresentation && (

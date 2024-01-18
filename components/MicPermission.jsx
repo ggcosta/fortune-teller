@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 
-const MicPremission = ({ handlePremissionAccepted }) => {
+const MicPermission = ({ handlePremissionAccepted }) => {
   const requestMicrophoneAccess = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Do something with the stream here if needed
+      // Inform parent component that permission has been granted
       handlePremissionAccepted();
+      // Stop the stream
+      stream.getTracks().forEach((track) => track.stop());
     } catch (err) {
       console.error("Microphone access was denied", err);
     }
@@ -51,4 +53,4 @@ const MicPremission = ({ handlePremissionAccepted }) => {
   );
 };
 
-export default MicPremission;
+export default MicPermission;
