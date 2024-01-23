@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { data } from "@/data/data";
 import PhaseHandler from "@/components/PhaseHandler";
 import Start from "@/components/Start";

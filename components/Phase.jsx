@@ -1,6 +1,6 @@
 import { useState } from "react";
-import AudioVisualizer from "./AudioVisualizer";
 import Audio from "./Audio";
+
 
 const Phase = ({ path, useVisualizer, handlePhaseEnd }) => {
   // States to keep track of whether to show the video or the visualizer

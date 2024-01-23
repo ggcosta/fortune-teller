@@ -1,92 +1,59 @@
 import { useEffect, useState } from "react";
 import { BarVisualizer } from "react-mic-visualizer";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
-const Audio = ( {handleAnswerEnd} ) => {
-  const [audioContext, setAudioContext] = useState(null);
+const Audio = ({ handleAnswerEnd }) => {
+  // state to keep track of the media stream
   const [mediaStream, setMediaStream] = useState(null);
-  const [isRecording, setIsRecording] = useState(false);
-  const [audioData, setAudioData] = useState([]);
-  const [isSilent, setIsSilent] = useState(false);
+  // state to keep track of the transcript
+  const { transcript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
 
+  // UseEffect to setup the microphone and start listening with speech recognition
   useEffect(() => {
-    // Function to handle audio data
-    const handleAudioData = (event) => {
-      const inputData = event.inputBuffer.getChannelData(0);
-      setAudioData(inputData);
-
-      // Check if the input audio level is significant
-      const isSignificant = inputData.some((value) => Math.abs(value) > 0.2);
-      setIsSilent(!isSignificant);
-    };
-
-    // Set up the microphone and audio processing
     const setupMicrophone = async () => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const context = new (window.AudioContext || window.webkitAudioContext)();
-      const microphone = context.createMediaStreamSource(stream);
-      const processor = context.createScriptProcessor(4096, 1, 1);
-
-      processor.onaudioprocess = handleAudioData;
-
-      microphone.connect(processor);
-      processor.connect(context.destination);
-
       setMediaStream(stream);
-      setAudioContext(context);
-      setIsRecording(true);
     };
 
-    // Start recording when the component mounts
     setupMicrophone();
 
-    // Cleanup when the component unmounts
-    return () => {
-      if (mediaStream) {
-        mediaStream.getTracks().forEach((track) => track.stop());
-      }
-      if (audioContext) {
-        audioContext.close();
-      }
-    };
+    SpeechRecognition.startListening({ continuous: true });
   }, []);
 
-  // Function to handle when the user stops providing significant audio input
+  // UseEffect to run every time the transcript changes
   useEffect(() => {
-    let silenceTimer;
+    // Function to run when the user stops talking for 5 seconds
+    const handleLongSilence = () => {
+      mediaStream.getTracks().forEach((track) => track.stop());
+      console.log("User stopped talking for 5 seconds");
+      SpeechRecognition.stopListening();
+      handleAnswerEnd();
+    };
 
-    if (isSilent) {
-      silenceTimer = setTimeout(() => {
-        // Perform your desired action when silence is detected for 3 seconds
-        console.log("User stopped talking for 5 seconds");
-        handleAnswerEnd();
-      }, 5000);
-    } else {
+    let silenceTimer = setTimeout(() => {
+      if (transcript.length === 0) return;
+      handleLongSilence();
+    }, 5000);
+
+    return () => {
+      // Clear the timer when the component unmounts
       clearTimeout(silenceTimer);
-    }
-
-    return () => clearTimeout(silenceTimer);
-  }, [isSilent]);
+    };
+  }, [transcript]);
 
   return (
     <div
       style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        width: "100vw",
+        height: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "column",
       }}
     >
-      <p>{isRecording ? "Recording..." : "Not recording"}</p>
-      {isSilent ? (
-        <p style={{ paddingBottom: "2rem" }}>User is silent</p>
-      ) : (
-        <p style={{ paddingBottom: "2rem" }}>User is speaking</p>
-      )}
       {
         <BarVisualizer
           stream={mediaStream}
