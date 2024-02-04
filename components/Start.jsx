@@ -17,7 +17,7 @@ const Start = ({ path, handleStart }) => {
 
   return (
     <>
-      <video autoPlay loop className="video-player">
+      <video autoPlay controls loop className="video-player">
         <source src={path} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
