@@ -1,5 +1,5 @@
 export const data = {
-  standByVideo: "videos/stand_by.mp4",
+  standByVideo: "/videos/stand_by.mp4",
   phasesData: {
     bgImg: "/images/background.png",
     errorVid: "/videos/no_input_error.mp4",
