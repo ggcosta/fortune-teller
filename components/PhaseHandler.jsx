@@ -35,7 +35,7 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
   };
 
   return (
-    <div className="app">
+    <>
       <Image
         className="bg-img"
         alt="background image"
@@ -62,7 +62,7 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
           inputData={inputData}
         />
       )}
-    </div>
+    </>
   );
 };
 

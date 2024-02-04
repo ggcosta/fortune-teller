@@ -42,18 +42,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {!micAccess && (
-          <MicPermission handlePremissionAccepted={handleMicAccess} />
-        )}
-        {!enterPressed && micAccess && (
-          <Start path={standByVideo} handleStart={handleStart} />
-        )}
-        {startPresentation && (
-          <PhaseHandler
-            data={phasesData}
-            handlePresentationEnd={handlePresentationEnd}
-          />
-        )}
+        <div className="app">
+          {!micAccess && (
+            <MicPermission handlePremissionAccepted={handleMicAccess} />
+          )}
+          {!enterPressed && micAccess && (
+            <Start path={standByVideo} handleStart={handleStart} />
+          )}
+          {startPresentation && (
+            <PhaseHandler
+              data={phasesData}
+              handlePresentationEnd={handlePresentationEnd}
+            />
+          )}
+        </div>
       </main>
     </>
   );
