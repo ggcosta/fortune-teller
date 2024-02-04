@@ -4,13 +4,16 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 
-const Audio = ({ handleAnswerEnd }) => {
+const Audio = ({ handleAnswerEnd, inputData }) => {
   // state to keep track of the media stream
   const [mediaStream, setMediaStream] = useState(null);
   // state to keep track of the transcript
   const { transcript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
 
+  // Timeouts
+  const answerEndTimeout = inputData.answerEndTimeout;
+  const noInputTimeout = inputData.noInputTimeout;
   // UseEffect to setup the microphone and start listening with speech recognition
   useEffect(() => {
     const setupMicrophone = async () => {
@@ -20,52 +23,48 @@ const Audio = ({ handleAnswerEnd }) => {
 
     setupMicrophone();
 
-    SpeechRecognition.startListening({ continuous: true });
+    SpeechRecognition.startListening({ continuous: true, language: "pt-PT" });
   }, []);
 
   // UseEffect to run every time the transcript changes
   useEffect(() => {
     // Function to run when the user stops talking for 5 seconds
-    const handleLongSilence = () => {
+    const handleLongSilence = (noInput = false) => {
       mediaStream.getTracks().forEach((track) => track.stop());
-      console.log("User stopped talking for 5 seconds");
       SpeechRecognition.stopListening();
-      handleAnswerEnd();
+      handleAnswerEnd(noInput);
     };
 
-    let silenceTimer = setTimeout(() => {
-      if (transcript.length === 0) return;
-      handleLongSilence();
-    }, 5000);
+    let silenceTimer;
 
+    if (transcript.length === 0) {
+      silenceTimer = setTimeout(() => {
+        handleLongSilence(true);
+      }, noInputTimeout);
+    } else {
+      silenceTimer = setTimeout(() => {
+        handleLongSilence(false);
+      }, answerEndTimeout);
+    }
+
+    console.log(`transcript ${transcript}`);
     return () => {
       // Clear the timer when the component unmounts
       clearTimeout(silenceTimer);
     };
-  }, [transcript]);
+  }, [transcript, mediaStream]);
 
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {
-        <BarVisualizer
-          stream={mediaStream}
-          size={150}
-          circle={true}
-          addTransparency={false}
-          barColor="#12b7eb"
-          bgColor="#000000"
-          barBgColor="#D1D5DB"
-        />
-      }
-    </div>
+    <>
+      <video
+        autoPlay
+        className="video-player"
+        onEnded={() => handleAnswerEnd(false)}
+      >
+        <source src={inputData.inputVid} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </>
   );
 };
 

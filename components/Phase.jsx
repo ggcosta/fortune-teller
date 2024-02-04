@@ -1,44 +1,34 @@
 import { useState } from "react";
 import Audio from "./Audio";
 
-
-const Phase = ({ path, useVisualizer, handlePhaseEnd }) => {
+const Phase = ({ path, useAudioInput, handlePhaseEnd, inputData }) => {
   // States to keep track of whether to show the video or the visualizer
   const [showVideo, setShowVideo] = useState(true);
-  const [showVisualizer, setShowVisualizer] = useState(false);
+  const [showAudioInput, setShowAudioInput] = useState(false);
 
   // Function to run after a video ends
   const handleVideoEnd = () => {
-    if (useVisualizer) {
+    if (useAudioInput) {
       setShowVideo(false);
-      setShowVisualizer(true);
+      setShowAudioInput(true);
       return;
     } else {
-      handlePhaseEnd();
+      handlePhaseEnd(false);
     }
   };
 
   return (
-    <div>
+    <>
       {showVideo && (
-        <video
-          muted
-          autoPlay
-          style={{
-            width: "100%",
-            height: "100vh",
-            objectFit: "cover",
-            margin: 0,
-            padding: 0,
-          }}
-          onEnded={handleVideoEnd}
-        >
+        <video autoPlay className="video-player" onEnded={handleVideoEnd}>
           <source src={path} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       )}
-      {showVisualizer && <Audio handleAnswerEnd={handlePhaseEnd} />}
-    </div>
+      {showAudioInput && (
+        <Audio handleAnswerEnd={handlePhaseEnd} inputData={inputData} />
+      )}
+    </>
   );
 };
 

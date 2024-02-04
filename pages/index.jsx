@@ -14,11 +14,12 @@ export default function Home() {
   const [micAccess, setMicAccess] = useState(false);
 
   // Extract phases array from data
-  const phases = data.phases;
+  const phasesData = data.phasesData;
+  const standByVideo = data.standByVideo;
 
   const handleMicAccess = () => {
     setMicAccess(true);
-  }
+  };
 
   // Function tu run after the start button is pressed
   const handleStart = () => {
@@ -28,11 +29,6 @@ export default function Home() {
 
   // Function to run at the end of the presentation
   const handlePresentationEnd = () => {
-    setStartPresentation(false);
-  };
-
-  // Function to run when the start over button is pressed
-  const handleRestart = () => {
     setStartPresentation(false);
     setEnterPressed(false);
   };
@@ -49,19 +45,14 @@ export default function Home() {
         {!micAccess && (
           <MicPermission handlePremissionAccepted={handleMicAccess} />
         )}
-        {!enterPressed && micAccess && <Start handleStart={handleStart} />}
+        {!enterPressed && micAccess && (
+          <Start path={standByVideo} handleStart={handleStart} />
+        )}
         {startPresentation && (
           <PhaseHandler
-            phases={phases}
+            data={phasesData}
             handlePresentationEnd={handlePresentationEnd}
           />
-        )}
-        {enterPressed && !startPresentation && (
-          <div>
-            <button className="begin-button" onClick={handleRestart}>
-              Start Over
-            </button>
-          </div>
         )}
       </main>
     </>
