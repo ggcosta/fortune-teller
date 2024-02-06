@@ -3,12 +3,13 @@ import { useEffect } from "react";
 const Start = ({ path, handleStart }) => {
   useEffect(() => {
     const handleEnter = (event) => {
-      if (event.key === "Enter") {
+      if (event.key === "Enter" || event.type === "click") {
         handleStart();
       }
     };
 
     document.addEventListener("keydown", handleEnter);
+    document.addEventListener("click", handleEnter);
 
     return () => {
       document.removeEventListener("keydown", handleEnter);
