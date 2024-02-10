@@ -1,12 +1,13 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Phase from "./Phase";
-import Image from "next/image";
 import handlePhasesData from "@/utils/auxiliaryFunctions";
+import { CSSTransition } from "react-transition-group";
 
 const PhaseHandler = ({ data, handlePresentationEnd }) => {
   // State to keep track of which phase we are on
   const [currentPhase, setCurrentPhase] = useState(0);
   const [noInputError, setNoInputError] = useState(false);
+  const [showPhase, setShowPhase] = useState(false);
   // Data descontruction
   const bgImage = data.bgImg;
   const errorVid = data.errorVid;
@@ -23,27 +24,38 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
   // Function to run after a phase ends
   const handlePhaseEnd = (noInput) => {
     if (noInput) {
-      setNoInputError(true);
+      setShowPhase(false);
+      setTimeout(() => {
+        setNoInputError(true);
+      }, 1000);
       return;
     }
     if (currentPhase < totalNumPhases - 1) {
-      setCurrentPhase(currentPhase + 1);
-      console.log(`currentPhase ${currentPhase + 1}`);
+      console.log("phase ended");
+      setShowPhase(false);
+      setTimeout(() => {
+        setCurrentPhase(currentPhase + 1);
+        setShowPhase(true);
+      }, 1000);
     } else {
       handlePresentationEnd();
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShowPhase(true);
+    }, 1000);
+  }, []);
+
   return (
     <>
-      <Image
-        className="bg-img"
-        alt="background image"
-        width={1080}
-        height={1920}
-        src={bgImage}
-      />
-      {noInputError && (
+      <CSSTransition
+        in={noInputError}
+        timeout={1000}
+        classNames="fade"
+        unmountOnExit
+      >
         <video
           autoPlay
           className="video-player"
@@ -52,8 +64,13 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
           <source src={errorVid} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      )}
-      {!noInputError && (
+      </CSSTransition>
+      <CSSTransition
+        in={showPhase}
+        timeout={1000}
+        classNames="fade"
+        unmountOnExit
+      >
         <Phase
           key={currentPhase}
           path={phases[currentPhase].paths}
@@ -61,7 +78,7 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
           handlePhaseEnd={handlePhaseEnd}
           inputData={inputData}
         />
-      )}
+      </CSSTransition>
     </>
   );
 };

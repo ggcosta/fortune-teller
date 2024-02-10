@@ -8,7 +8,7 @@ const Audio = ({ handleAnswerEnd, inputData }) => {
   // state to keep track of the media stream
   const [mediaStream, setMediaStream] = useState(null);
   // state to keep track of the transcript
-  const { transcript, browserSupportsSpeechRecognition } =
+  const { transcript } =
     useSpeechRecognition();
 
   // Timeouts
