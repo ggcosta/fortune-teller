@@ -33,10 +33,9 @@ export default function Home() {
             <MicPermission handlePremissionAccepted={handleMicAccess} />
           )}
           {startPresentation && (
-            // <PhaseHandler
-            //   data={phasesData}
-            // />
-            <AlternativeAudio />
+            <PhaseHandler
+              data={phasesData}
+            />
           )}
         </div>
       </main>
