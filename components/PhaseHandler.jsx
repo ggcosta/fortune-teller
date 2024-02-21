@@ -3,22 +3,27 @@ import Phase from "./Phase";
 import Image from "next/image";
 import handlePhasesData from "@/utils/auxiliaryFunctions";
 
-const PhaseHandler = ({ data, handlePresentationEnd }) => {
+const PhaseHandler = ({ data }) => {
   // State to keep track of which phase we are on
   const [currentPhase, setCurrentPhase] = useState(0);
   const [noInputError, setNoInputError] = useState(false);
+  const [presentationRerun, setPresentationRerun] = useState(false);
   // Data descontruction
-  const bgImage = data.bgImg;
   const errorVid = data.errorVid;
-  const transitionVid = data.transitionVid;
   const phases = useMemo(
-    () => handlePhasesData(data.phases, transitionVid),
-    [data.phases, transitionVid]
+    () => handlePhasesData(data.phases),
+    [presentationRerun]
   );
   const inputData = data.inputData;
 
   // Total number of phases
   const totalNumPhases = phases.length;
+  
+  const handlePresentationEnd = () => {
+    setPresentationRerun(!presentationRerun);
+    if (noInputError) setNoInputError(false);
+    setCurrentPhase(0);
+  };
 
   // Function to run after a phase ends
   const handlePhaseEnd = (noInput) => {
@@ -29,20 +34,15 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
     if (currentPhase < totalNumPhases - 1) {
       setCurrentPhase(currentPhase + 1);
       console.log(`currentPhase ${currentPhase + 1}`);
-    } else {
+    } else {  
       handlePresentationEnd();
     }
   };
 
+ 
+
   return (
     <>
-      <Image
-        className="bg-img"
-        alt="background image"
-        width={1080}
-        height={1920}
-        src={bgImage}
-      />
       {noInputError && (
         <video
           autoPlay
@@ -56,8 +56,7 @@ const PhaseHandler = ({ data, handlePresentationEnd }) => {
       {!noInputError && (
         <Phase
           key={currentPhase}
-          path={phases[currentPhase].paths}
-          useAudioInput={phases[currentPhase].useAudioInput}
+          data={phases[currentPhase]} // phase data
           handlePhaseEnd={handlePhaseEnd}
           inputData={inputData}
         />

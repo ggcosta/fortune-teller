@@ -2,12 +2,10 @@ import Head from "next/head";
 import { useState } from "react";
 import { data } from "@/data/data";
 import PhaseHandler from "@/components/PhaseHandler";
-import Start from "@/components/Start";
 import MicPermission from "@/components/MicPermission";
+import AlternativeAudio from "@/components/AlternativeAudio";
 
 export default function Home() {
-  // State to track if the enter button has been pressed
-  const [enterPressed, setEnterPressed] = useState(false);
   // State to track if the presentation has started
   const [startPresentation, setStartPresentation] = useState(false);
   // State to track if user has given microphone access
@@ -15,22 +13,10 @@ export default function Home() {
 
   // Extract phases array from data
   const phasesData = data.phasesData;
-  const standByVideo = data.standByVideo;
 
   const handleMicAccess = () => {
     setMicAccess(true);
-  };
-
-  // Function tu run after the start button is pressed
-  const handleStart = () => {
-    setEnterPressed(true);
     setStartPresentation(true);
-  };
-
-  // Function to run at the end of the presentation
-  const handlePresentationEnd = () => {
-    setStartPresentation(false);
-    setEnterPressed(false);
   };
 
   return (
@@ -46,14 +32,11 @@ export default function Home() {
           {!micAccess && (
             <MicPermission handlePremissionAccepted={handleMicAccess} />
           )}
-          {!enterPressed && micAccess && (
-            <Start path={standByVideo} handleStart={handleStart} />
-          )}
           {startPresentation && (
-            <PhaseHandler
-              data={phasesData}
-              handlePresentationEnd={handlePresentationEnd}
-            />
+            // <PhaseHandler
+            //   data={phasesData}
+            // />
+            <AlternativeAudio />
           )}
         </div>
       </main>
