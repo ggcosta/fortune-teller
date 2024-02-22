@@ -3,19 +3,19 @@ import { useEffect } from "react";
 const Video = ({ path, handleEnd, useLoop = false }) => {
   useEffect(() => {
     const handlePress = (event) => {
-      if (event.key === "Enter" || event.type === "click") {
+      if (event.type === "mousemove" || event.type === "touchstart") {
         handleEnd();
       }
     };
 
     if (useLoop) {
-      document.addEventListener("keydown", handlePress);
-      document.addEventListener("click", handlePress);
+      document.addEventListener("mousemove", handlePress);
+      document.addEventListener("touchstart", handlePress);
     }
     return () => {
       if (useLoop) {
-        document.removeEventListener("keydown", handlePress);
-        document.removeEventListener("click", handlePress);
+        document.removeEventListener("mousemove", handlePress);
+        document.removeEventListener("touchstart", handlePress);
       }
     };
   }, []);
