@@ -2,6 +2,7 @@ export const data = {
   standByVideo: "/videos/stand_by.mp4",
   phasesData: {
     errorVid: "/videos/no_input_error.mp4",
+    transitionImage: "/images/bg.jpg",
     phases: [
       {
         path: "/videos/stand_by.mp4",
@@ -10,6 +11,7 @@ export const data = {
       {
         path: "videos/intro.mp4",
         type: "intro",
+        transitionImage: "/images/bg.jpg",
       },
       {
         paths: [
@@ -46,6 +48,7 @@ export const data = {
           "videos/output_12.mp4",
         ],
         type: "output",
+        transitionImage: "/images/bg.jpg",
       },
     ],
     inputData: {

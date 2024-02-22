@@ -7,7 +7,10 @@ const Phase = ({ data, handlePhaseEnd, inputData }) => {
   // States to keep track of whether to show the video or the visualizer
   const [showVideo, setShowVideo] = useState(true);
   const [showAudioInput, setShowAudioInput] = useState(false);
-  const showBgImage = data.type === "question" ? true : false;
+  const showBgImage =
+    ["question", "intro", "output"].includes(data.type)
+      ? true
+      : false;
 
   const useAudioInput = data.useAudioInput;
   const path = data.path;
