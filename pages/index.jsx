@@ -1,9 +1,8 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { data } from "@/data/data";
 import PhaseHandler from "@/components/PhaseHandler";
 import MicPermission from "@/components/MicPermission";
-import AlternativeAudio from "@/components/AlternativeAudio";
 
 export default function Home() {
   // State to track if the presentation has started
@@ -18,6 +17,29 @@ export default function Home() {
     setMicAccess(true);
     setStartPresentation(true);
   };
+
+useEffect(() => {
+  const preventDefault = (event) => {
+    event.preventDefault();
+  };
+
+  document.addEventListener("touchmove", preventDefault, {
+    passive: false,
+  });
+
+  document.addEventListener("touchend", preventDefault, {
+    passive: false,
+  });
+
+  document.addEventListener("contextmenu", preventDefault);
+
+  return () => {
+    document.removeEventListener("touchmove", preventDefault);
+    document.removeEventListener("touchend", preventDefault);
+    document.removeEventListener("contextmenu", preventDefault);
+  };
+}, []);
+  
 
   return (
     <>

@@ -3,19 +3,21 @@ import { useEffect } from "react";
 const Video = ({ path, handleEnd, useLoop = false }) => {
   useEffect(() => {
     const handlePress = (event) => {
-      if (event.type === "mousemove" || event.type === "touchstart") {
+      if (event.type === "click" || event.type === "touchstart" || event.key === "Enter") {
         handleEnd();
       }
     };
 
     if (useLoop) {
-      document.addEventListener("mousemove", handlePress);
+      document.addEventListener("click", handlePress);
       document.addEventListener("touchstart", handlePress);
+      document.addEventListener("keydown", handlePress);
     }
     return () => {
       if (useLoop) {
-        document.removeEventListener("mousemove", handlePress);
+        document.removeEventListener("click", handlePress);
         document.removeEventListener("touchstart", handlePress);
+        document.removeEventListener("keydown", handlePress);
       }
     };
   }, []);
@@ -37,6 +39,9 @@ const Video = ({ path, handleEnd, useLoop = false }) => {
         <source src={path} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+      <div className="watermark-hider">
+
+      </div>
     </>
   );
 };
