@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { BarVisualizer } from "react-mic-visualizer";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
