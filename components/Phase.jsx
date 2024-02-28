@@ -7,15 +7,9 @@ const Phase = ({ data, handlePhaseEnd, inputData }) => {
   // States to keep track of whether to show the video or the visualizer
   const [showVideo, setShowVideo] = useState(true);
   const [showAudioInput, setShowAudioInput] = useState(false);
-  const showBgImage =
-    ["question", "intro", "output"].includes(data.type)
-      ? true
-      : false;
-
   const useAudioInput = data.useAudioInput;
   const path = data.path;
   const standBy = data.type === "stand_by" ? true : false;
-  const transitionImage = data.transitionImage;
 
   // Function to run after a video ends
   const handleVideoEnd = () => {
@@ -30,15 +24,6 @@ const Phase = ({ data, handlePhaseEnd, inputData }) => {
 
   return (
     <>
-      {showBgImage && (
-        <Image
-          className="bg-img"
-          alt="transition image"
-          width={1080}
-          height={1920}
-          src={transitionImage}
-        />
-      )}
       {showVideo && (
         <Video path={path} handleEnd={handleVideoEnd} useLoop={standBy} />
       )}

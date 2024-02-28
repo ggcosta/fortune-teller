@@ -1,8 +1,7 @@
 export const data = {
-  standByVideo: "/videos/stand_by.mp4",
   phasesData: {
     errorVid: "/videos/no_input_error.mp4",
-    transitionImage: "/images/bg.jpg",
+    transitionImage: "/images/bg.png",
     phases: [
       {
         path: "/videos/stand_by.mp4",

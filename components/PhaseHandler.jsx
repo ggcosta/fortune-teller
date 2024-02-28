@@ -50,13 +50,14 @@ const PhaseHandler = ({ data }) => {
 
   return (
     <>
-      {showBgImage && (
+      {showBgImage && transitionImage && (
         <Image
           className="bg-img"
           alt="transition image"
           width={1080}
           height={1920}
           src={transitionImage}
+          priority
         />
       )}
       {noInputError && (
