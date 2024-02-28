@@ -40,7 +40,7 @@ const PhaseHandler = ({ data }) => {
       if (phases[nextPhase].type === "intro") {
         console.log("intro");
         setTimeout(() => {
-        setShowBgImage(true);
+          setShowBgImage(true);
         }, 1000);
       }
     } else {
@@ -78,6 +78,7 @@ const PhaseHandler = ({ data }) => {
           inputData={inputData}
         />
       )}
+      <div className="watermark-hider"></div>
     </>
   );
 };

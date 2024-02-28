@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { data } from "@/data/data";
+import data from "@/config.json"
 import PhaseHandler from "@/components/PhaseHandler";
 import MicPermission from "@/components/MicPermission";
 
